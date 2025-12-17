@@ -1,11 +1,11 @@
 -- Standalone plugins with less than 10 lines of config go here
 return {
   {
-    -- Tmux & split window navigation
-    'christoomey/vim-tmux-navigator',
+    -- autoclose tags
+    'windwp/nvim-ts-autotag',
   },
   {
-    -- Detect tabstop and shiftwidth automatically
+    -- detect tabstop and shiftwidth automatically
     'tpope/vim-sleuth',
   },
   {
@@ -19,6 +19,21 @@ return {
   {
     -- Hints keybinds
     'folke/which-key.nvim',
+    opts = {
+      delay = 3000,
+      -- win = {
+      --   border = {
+      --     { '┌', 'FloatBorder' },
+      --     { '─', 'FloatBorder' },
+      --     { '┐', 'FloatBorder' },
+      --     { '│', 'FloatBorder' },
+      --     { '┘', 'FloatBorder' },
+      --     { '─', 'FloatBorder' },
+      --     { '└', 'FloatBorder' },
+      --     { '│', 'FloatBorder' },
+      --   },
+      -- },
+    },
   },
   {
     -- Autoclose parentheses, brackets, quotes, etc.
@@ -35,7 +50,7 @@ return {
     opts = { signs = false },
   },
   {
-    -- High-performance color highlighter
+    -- high-performance color highlighter
     'norcalli/nvim-colorizer.lua',
     config = function()
       require('colorizer').setup()

@@ -1,3 +1,4 @@
+-- Format on save and linters
 return {
   'nvimtools/none-ls.nvim',
   dependencies = {
@@ -9,29 +10,26 @@ return {
     local formatting = null_ls.builtins.formatting -- to setup formatters
     local diagnostics = null_ls.builtins.diagnostics -- to setup linters
 
-    -- Formatters & linters for mason to install
+    -- list of formatters & linters for mason to install
     require('mason-null-ls').setup {
       ensure_installed = {
+        'checkmake',
         'prettier', -- ts/js formatter
-        'stylua', -- lua formatter
         'eslint_d', -- ts/js linter
-        'shfmt', -- Shell formatter
-        'checkmake', -- linter for Makefiles
-        'ruff', -- Python linter and formatter
-        'gofumpt', -- Go Formatters
-        'goimports', -- Go Imports Formatters
+        'shfmt',
+        -- 'stylua', -- lua formatter; Already installed via Mason
+        -- 'ruff', -- Python linter and formatter; Already installed via Mason
       },
+      -- auto-install configured formatters & linters (with null-ls)
       automatic_installation = true,
     }
 
     local sources = {
       diagnostics.checkmake,
-      formatting.prettier.with { filetypes = { 'html', 'json', 'yaml', 'markdown', 'ts', 'js' } },
+      formatting.prettier.with { filetypes = { 'html', 'json', 'yaml', 'markdown' } },
       formatting.stylua,
       formatting.shfmt.with { args = { '-i', '4' } },
       formatting.terraform_fmt,
-      formatting.gofumpt,
-      formatting.goimports,
       require('none-ls.formatting.ruff').with { extra_args = { '--extend-select', 'I' } },
       require 'none-ls.formatting.ruff_format',
     }
