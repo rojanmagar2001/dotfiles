@@ -105,3 +105,10 @@ bindkey '^A' beginning-of-line
 bindkey '^E' end-of-line
 bindkey '^K' kill-line
 bindkey -M viins '^?' backward-delete-char   # Backspace past the insert point
+
+# ---------------------------------------------------------------- Greeting --
+# System info on a new terminal window. Skipped inside tmux and herdr, where
+# every new pane would repeat it.
+if command -v fastfetch >/dev/null 2>&1 && [[ -z "$TMUX" && -z "$HERDR_ENV" ]]; then
+  fastfetch
+fi
