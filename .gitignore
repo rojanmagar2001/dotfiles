@@ -1,3 +1,5 @@
 .DS_Store
 zsh/.config/zsh/local.zsh
 zsh/.config/zsh/work.zsh
+claude/.claude/work.md
+claude/.claude/private.md
