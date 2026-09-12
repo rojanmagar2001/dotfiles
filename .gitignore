@@ -3,3 +3,6 @@ zsh/.config/zsh/local.zsh
 zsh/.config/zsh/work.zsh
 claude/.claude/work.md
 claude/.claude/private.md
+
+# Skills cloned from upstream repos, managed by pi itself
+pi/.pi/agent/skills/mattpocock-skills/
