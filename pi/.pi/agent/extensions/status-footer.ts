@@ -86,9 +86,9 @@ export default function (pi: ExtensionAPI) {
         const modelLabel = provider ? `${provider}/${model}` : model;
 
         const sep = theme.fg("dim", " │ ");
-        let line = theme.fg("mdLink", `  ${dir} `);
-        if (branch) line += sep + theme.fg("mdHeading", ` ${branch} `);
-        line += sep + theme.fg("accent", `󰧑 ${modelLabel} `);
+        let line = theme.fg("mdLink", ` ${dir}`);
+        if (branch) line += sep + theme.fg("mdHeading", ` ${branch}`);
+        line += sep + theme.fg("accent", `󰧑 ${modelLabel}`);
 
         const usage = ctx.getContextUsage();
         if (usage?.percent != null) {
@@ -115,7 +115,6 @@ export default function (pi: ExtensionAPI) {
             .sort(([a], [b]) => a.localeCompare(b))
             .map(([, text]) => text.replace(/[\r\n\t]+/g, " ").trim())
             .join(" ");
-          lines.push("");
           lines.push(truncateToWidth(statusLine, width, theme.fg("dim", "…")));
         }
 
