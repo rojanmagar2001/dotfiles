@@ -37,3 +37,6 @@ unset _zsh_module
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# opencode
+export PATH=/home/rojanmagar/.opencode/bin:$PATH
