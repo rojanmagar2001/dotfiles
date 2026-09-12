@@ -1,0 +1,58 @@
+# section	item	description	detail
+leader	Space	The leader key	Nearly every custom mapping starts with it. Pause after pressing it and which-key shows you what can follow.
+find	<leader>sf	Find a file in the project by name	Telescope. Fuzzy, so `mdlsp` finds `models/lsp.py`.
+find	<leader>sg	Search the text of every file in the project	Results update as you type.
+find	<leader>sw	Search for the word under the cursor	
+find	<leader>/	Fuzzy search inside the file you are in	
+find	<leader>so	Reopen a recent file	
+find	<leader>sr	Reopen the last search, exactly where you left it	Saves retyping a long grep.
+find	<leader>sm	Jump to a mark	
+find	<leader><leader>	Switch buffer	Also on <leader>sb and <leader>Tab.
+find	<leader>sh	Search neovim's own help	Fastest way to answer "what does this option do".
+files	-	Open the current directory as an editable buffer	Oil. Rename by editing a line, delete with dd, create by adding a line, then :w to apply it all at once.
+files	<leader>e	File tree down the left side	Neo-tree.
+files	<leader>w	File tree in a floating window	
+lsp	gd	Go to the definition	Ctrl+o jumps back to where you were.
+lsp	gr	List everywhere this symbol is used	
+lsp	gI	Go to the implementation	Useful in languages where the type and the implementation live apart.
+lsp	gD	Go to the declaration	Not the same as the definition: in C this is the header.
+lsp	K	Show the documentation for what is under the cursor	
+lsp	<leader>rn	Rename this symbol everywhere it appears	Across files, not just this one.
+lsp	<leader>ca	Offer fixes for the error or hint under the cursor	Works on a visual selection too.
+lsp	<leader>ds	Jump to a symbol in this file	
+lsp	<leader>ws	Jump to a symbol anywhere in the project	
+lsp	<leader>D	Go to the definition of the type, not the variable	
+diagnostics	]d / [d	Next / previous problem in the file	
+diagnostics	<leader>d	Show the full message in a float	Use it when the message is cut off at the edge of the screen.
+diagnostics	<leader>q	Collect every problem into a list you can walk	
+harpoon	<leader>m	Pin this file to the harpoon list	For the handful of files you keep bouncing between.
+harpoon	<leader>M	Open the harpoon list	It is an editable buffer: reorder or delete lines to change the slots.
+harpoon	<leader>1 to 4	Jump straight to pinned file 1 to 4	No picker, no search, one keystroke.
+harpoon	<leader>n / <leader>p	Next / previous pinned file	
+git	<leader>lg	Open LazyGit without leaving neovim	
+git	<leader>gs	Browse changed files with the diff alongside	
+git	<leader>gc	Search the commit history	<leader>gcf narrows it to the file you are in.
+git	<leader>gb	Switch branch	
+git	<leader>gf	Find a file, but only ones git tracks	
+git	:Git blame	Blame the current file, with fugitive	Press Enter on a line to open that commit.
+git	:GBrowse	Open the current file or selection on GitHub	
+windows	<leader>v / <leader>h	Split vertically / horizontally	
+windows	Ctrl+h j k l	Move between splits, and straight out into tmux panes	
+windows	Arrow keys	Resize the current split	
+windows	<leader>se	Even out every split	
+windows	<leader>xs	Close this split	
+buffers	Tab / Shift+Tab	Next / previous buffer	
+buffers	<leader>x	Close this buffer	
+editing	Ctrl+s	Save	<leader>sn saves without running the formatter, for when the formatter is fighting you.
+editing	Ctrl+/	Comment the line or the selection out, and back in	Ctrl+c does the same.
+editing	Ctrl+d / Ctrl+u	Half a page down or up, cursor stays centred	
+editing	n / N	Next / previous match, centred, with folds opened	
+editing	< or > in visual mode	Indent the selection and keep it selected	Repeat without reselecting each time.
+editing	p in visual mode	Paste over a selection without losing what you yanked	Normally pasting over text replaces your clipboard with the text you just destroyed.
+editing	x	Delete a character without clobbering the register	
+outline	<leader>o	Toggle the symbol outline for this file	Aerial. Once open, { and } jump between symbols.
+debug	F5	Start or continue debugging	F1 steps into, F2 over, F3 out. F7 toggles the debugger panels.
+debug	<leader>b	Toggle a breakpoint on this line	<leader>B sets one that only fires on a condition.
+maintenance	:Lazy	Plugin manager	u updates, x removes what is no longer in the config, and the profile tab shows what is slowing startup down.
+maintenance	:Mason	Install and update language servers and formatters	
+maintenance	:checkhealth	Find out what neovim thinks is broken	

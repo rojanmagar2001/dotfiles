@@ -1,0 +1,35 @@
+# section	item	description	detail
+prefix	Ctrl+Space	The prefix key everything else hangs off	Rebound from the default Ctrl+b. Easier to reach, and it does not fight vim's Ctrl+b page-up.
+panes	Prefix + \	Split the pane left and right	The new pane opens in the same directory as the one you split, so there is nothing to cd into.
+panes	Prefix + -	Split the pane top and bottom	Also inherits the current directory.
+panes	Ctrl+h j k l	Move between panes, and in and out of neovim splits	No prefix needed. vim-tmux-navigator makes the same four keys keep working once the pane is running neovim.
+panes	Prefix + h j k l	Resize the pane by 5 cells	The binding repeats, so tap the letter again without pressing the prefix each time.
+panes	Prefix + m	Zoom the pane to fill the window, press again to restore	A zoomed window shows a marker next to its name in the status bar.
+panes	Prefix + q	Flash the pane numbers, press one to jump there	
+panes	Prefix + x	Close this pane	Asks for confirmation first.
+panes	Prefix + space	Cycle through the built-in pane layouts	Quick way to rebalance a messy split.
+panes	Prefix + !	Break this pane out into its own window	
+windows	Prefix + c	New window, in the current directory	Plain tmux would open it wherever the session started; this config keeps your path.
+windows	Prefix + 1 to 9	Jump to a window by number	Numbering starts at 1, not 0, and renumbers itself when a window closes.
+windows	Prefix + ,	Rename this window	Renaming also stops tmux from renaming it for you.
+windows	Prefix + Shift+Left/Right	Move this window one slot left or right	
+windows	Prefix + n / p	Next / previous window	
+windows	Prefix + &	Close this window	
+sessions	tmux new -s name	Start a named session	
+sessions	tmux a -t name	Reattach to a session	Plain `tmux a` picks up the most recent one.
+sessions	Prefix + d	Detach and leave everything running	
+sessions	Prefix + s	Pick a session from a tree of all of them	
+sessions	Prefix + $	Rename this session	
+sessions	Closing a session	Does not drop you back to the plain shell	detach-on-destroy is off, so tmux moves you to another session instead of exiting.
+copy mode	Prefix + [	Enter copy mode and scroll back through output	Movement is vi style: / and ? to search, n, gg, G all work.
+copy mode	v then y	Select text, then copy it to the macOS clipboard	y pipes the selection through pbcopy, so it lands in every app, not just tmux.
+copy mode	Prefix + P	Paste what you last copied	Capital P: lowercase p is already previous window.
+copy mode	q	Leave copy mode	
+config	Prefix + r	Reload tmux.conf without restarting anything	
+config	Prefix + I	Install the plugins listed in tmux.conf	tpm bindings: Prefix + U updates them, Prefix + Alt+u removes ones you deleted from the config.
+config	Prefix + :	Type a tmux command directly	Tab completes. Good for one-off things like `swap-window -t 1`.
+recovery	Prefix + Ctrl+r	Restore the sessions saved before the last reboot	tmux-resurrect saves layouts and pane contents, tmux-continuum snapshots every 15 minutes.
+agents	Cyan asterisk	A coding agent in that window is working	The flag sits next to the window name in the status bar.
+agents	Green tick	The agent finished and is waiting on you	
+agents	Orange bang	The agent needs a permission answer before it can carry on	
+agents	Grey circle	Agent session is open but idle	The flag disappears entirely once the pane is back at a shell.

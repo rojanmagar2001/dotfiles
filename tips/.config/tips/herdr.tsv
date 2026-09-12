@@ -1,0 +1,19 @@
+# section	item	description	detail
+prefix	Ctrl+Space	The herdr prefix, deliberately the same key as tmux	So the muscle memory carries over between the two.
+panes	Prefix + \	Split vertically	
+panes	Prefix + -	Split horizontally	
+panes	Ctrl+h j k l	Move between panes, and into neovim splits	nav.sh hands the key over to neovim when the pane is running it, so one set of keys covers both.
+panes	Prefix + m	Zoom the pane, the tmux way	Prefix + z works too.
+panes	Prefix + ;	Back to the pane you were in before	Prefix + Shift+l does the same.
+workspaces	Prefix + s	Pick a workspace	Prefix + w opens the same picker.
+workspaces	Prefix + Shift+1 to 9	Switch to a workspace by number	
+workspaces	Prefix + ( / )	Previous / next workspace	
+workspaces	j / k in the picker	Move down and up the workspace list	
+tabs	Prefix + ,	Rename this tab	
+tabs	Prefix + Shift+Left/Right	Move this tab left or right	
+agents	Prefix + a	Cycle to the next agent pane	Prefix + Shift+a goes the other way.
+agents	Prefix + Alt+1 to 9	Focus a specific agent	The agent panel is sorted by priority, so the one that needs you is near the top.
+agents	Pane borders	Show which agent is running in each pane	
+session	Prefix + d	Detach	
+config	Prefix + Shift+s	Open settings	
+config	Prefix + /	The built-in key help	Faster than opening config.toml when you just want to check one binding.

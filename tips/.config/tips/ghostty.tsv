@@ -1,0 +1,8 @@
+# section	item	description	detail
+config	Cmd+,	Open the ghostty config	
+config	Cmd+Shift+,	Reload the config without restarting	
+splits	Cmd+d / Cmd+Shift+d	Split right / down	Handy before tmux is running; inside tmux use the tmux splits instead.
+splits	Cmd+Alt+arrow	Move between splits	
+tabs	Cmd+t	New tab	Cmd+1 to 9 jumps to one.
+theme	ghostty +list-themes	Preview every built-in theme in the terminal	The ones in ~/.config/ghostty/themes are the custom catppuccin variants.
+theme	background-opacity	Currently 0.7, with a 20px blur behind it	Set it to 1 if a screen share makes the transparency unreadable.

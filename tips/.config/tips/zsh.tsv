@@ -1,0 +1,31 @@
+# section	item	description	detail
+navigation	z part-of-path	Jump to any directory you have been in before	zoxide ranks by how often and how recently you go there, so `z dot` lands in ~/.dotfiles from anywhere.
+navigation	zi	Same as z, but pick from a list when several match	
+navigation	name-of-directory	Typing a directory name on its own is enough to cd into it	AUTO_CD is on, so `..` and `../..` work as commands too.
+navigation	cd -	Back to the directory you were in before	`cd -<Tab>` shows the whole stack of recent directories to pick from.
+navigation	fcd	Fuzzy find a directory below here and cd into it	
+navigation	mkcd name	Create a directory and step into it	
+navigation	dots dev doc dow	Jump to .dotfiles, development, Documents, Downloads	
+fzf	Ctrl+t	Drop a file path into the command you are typing	Preview shows the file with highlighting. Ctrl+/ moves the preview around.
+fzf	Ctrl+r	Fuzzy search your shell history	Beats pressing Up thirty times.
+fzf	Alt+c	cd into a directory picked from a list	On this Mac it is also bound to the ç that Alt+c actually produces.
+fzf	**<Tab>	Fuzzy complete the argument to any command	Works everywhere: `nvim **<Tab>`, `kill -9 **<Tab>`, `git checkout **<Tab>`.
+fzf	fh	Search history and run the chosen command immediately	Ctrl+r only puts it on the line, this runs it.
+fzf	Tab	Mark several results at once in a multi-select picker	Used by gafzf, grmfzf and friends.
+history	 command	A leading space keeps a command out of history	For anything with a token or a password in it.
+history	Shared	Every open shell sees the same history, live	50,000 entries, timestamped, duplicates dropped.
+vi mode	Esc	Leave insert mode on the command line	The cursor changes to a block, so you can always see which mode you are in.
+vi mode	v in normal mode	Open the command you are typing in neovim, save to run it	The best way to fix a long or multi-line command.
+vi mode	y in normal mode	Yank to the macOS clipboard, not just the shell buffer	
+vi mode	Ctrl+a / Ctrl+e	Jump to the start or end of the line	Kept from emacs mode. Ctrl+k still kills to the end of the line.
+suggestions	Right arrow	Accept the greyed-out suggestion	It comes from your history first, then from completion.
+completion	Tab Tab	Turn the completion list into a menu you can arrow around	Matching ignores case, so `cd doc` completes `Documents`.
+config	reload	Restart zsh in place after changing a config file	
+config	local.zsh	Machine-specific settings go here	~/.config/zsh/local.zsh is git-ignored and loads last, so it overrides anything before it.
+config	work.zsh	Employer or client settings go here	Also git-ignored. Secrets belong in ~/.env, which .zshenv picks up.
+config	tools.zsh	Add to PATH with path_prepend	It skips directories that do not exist and refuses to add anything twice.
+misc	extract file	Unpack any archive without remembering the flags	tar, gz, xz, bz2, zip, 7z, rar.
+misc	y	Open the yazi file manager, and land in whatever directory you left it in	
+misc	path	Print PATH one entry per line	
+misc	nosleep	Keep the Mac awake, lid closed included	Ctrl+c turns sleep back on.
+misc	time zsh -i -c exit	Measure how long a new shell takes to start	Currently around 100ms. Run it a few times, the first is always slower.

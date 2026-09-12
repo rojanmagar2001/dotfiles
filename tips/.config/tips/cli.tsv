@@ -1,0 +1,16 @@
+# section	item	description	detail
+listing	ls / ll / la	eza, with icons and directories first	ll is the long view with git status per file, la adds hidden files.
+listing	lt	Tree, two levels deep	`eza --tree --level=4` when you need more.
+reading	cat file	bat: syntax highlighting, line numbers, git changes in the gutter	catp prints it plain, for piping or copying out.
+reading	bat -A file	Show tabs, spaces and line endings	For the whitespace bug you cannot see.
+searching	rg text	Search the whole project, respecting .gitignore	-i ignores case, -l lists only filenames, -t py limits it to one language, -A 3 shows lines after each hit.
+searching	fd pattern	Find files by name, fast, skipping .gitignore	-e ts by extension, -t d for directories only, -H to include hidden files.
+searching	fd -x cmd	Run a command on everything found	`fd -e png -x optipng` for example.
+files	y	Yazi file manager, and the shell follows you out	Preview anything, bulk rename, and cd to wherever you ended up.
+navigation	z / zi	Jump to a directory by a fragment of its name	Learns from where you actually go.
+git	lg	LazyGit	
+git	gh pr create	Open a pull request from the terminal	`gh pr view --web` opens the current branch's PR in a browser.
+misc	tf	terraform	
+misc	k	kubectl	
+misc	d / dc / dps	docker, docker compose, and a readable container list	dps trims the output to name, status and ports.
+misc	caffeinate -di	Stop the Mac sleeping while a long job runs	Prefix it to any command: `caffeinate -di make build`.

@@ -1,0 +1,22 @@
+# section	item	description	detail
+status	gs / gss	Status, long or short	The short form is one line per file: first column staged, second unstaged.
+staging	ga	Stage files	
+staging	gafzf	Pick what to stage from a fuzzy list	Tab marks several. Shows modified and untracked files, skips __pycache__.
+staging	grsfzf	Pick what to unstage	
+staging	grfzf	Pick which files to throw local changes away from	Destructive: the files you pick go back to their committed state.
+diff	gd / gds	Diff the working tree / the staged changes	gds before committing is the fastest way to catch a stray debug line.
+commit	gcm "message"	Commit with a message	
+commit	gc	Commit with the editor open and the diff shown underneath	
+commit	gcmnv "message"	Commit without running the hooks	
+commit	gcanenv	Fold changes into the last commit, keeping its message	Amend, no edit, no hooks. Do not do this to commits you have already pushed.
+commit	gqc message	Commit with the ticket ID pulled off the branch name	On branch abc-123-add-login it writes "ABC-123: message". gqcp does the same and pushes.
+branches	gcob name	Create a branch and switch to it	
+branches	gcofzf	Switch branch by picking from a list	
+branches	gb / gbr	List local / remote branches	
+sync	gup	Fetch, then rebase onto what came down	Keeps history flat instead of adding a merge commit.
+sync	gl / gp	Pull / push	gpo pushes to origin explicitly.
+history	glg	The last ten commits as a compact graph	
+history	git log -S text	Find the commit that introduced or removed a piece of text	The one to reach for when you want to know why a line exists.
+history	git reflog	Every position HEAD has been in, including ones you thought you lost	The undo button after a bad reset or rebase.
+lazygit	lg	Open LazyGit	Space stages a file, Enter opens it to stage individual lines or hunks, c commits, P pushes, and the whole repo state is visible at once.
+lazygit	?	The keybinding help, in whichever panel is focused	LazyGit has different keys per panel, so check it in context.

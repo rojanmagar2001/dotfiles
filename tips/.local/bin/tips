@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+#
+# tips - fuzzy browser for the keys, aliases and tricks in this setup.
+#
+# Data lives in $TIPS_DIR (default ~/.config/tips), one tab-separated file per
+# tool, named after it. Columns: section, item, description, detail.
+# Lines starting with # and blank lines are ignored.
+
+set -euo pipefail
+
+TIPS_DIR="${TIPS_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/tips}"
+SELF="${BASH_SOURCE[0]}"
+[ "${SELF#/}" = "$SELF" ] && SELF="$PWD/$SELF"
+
+# Nord palette, the same one the tmux status bar and herdr accent use.
+fg()  { printf '\033[38;2;%d;%d;%dm' "$1" "$2" "$3"; }
+GREEN=$(fg 163 190 140)
+CYAN=$(fg 136 192 208)
+BLUE=$(fg 129 161 193)
+ORANGE=$(fg 208 135 112)
+YELLOW=$(fg 235 203 139)
+PURPLE=$(fg 180 142 173)
+RED=$(fg 191 97 106)
+GRAY=$(fg 124 132 150)
+FG=$(fg 216 222 233)
+BOLD=$'\033[1m'
+DIM=$'\033[2m'
+OFF=$'\033[0m'
+
+tool_color() {
+  case $1 in
+    tmux)      printf '%s' "$GREEN"  ;;
+    nvim)      printf '%s' "$CYAN"   ;;
+    zsh)       printf '%s' "$BLUE"   ;;
+    git)       printf '%s' "$ORANGE" ;;
+    cli)       printf '%s' "$YELLOW" ;;
+    aerospace) printf '%s' "$PURPLE" ;;
+    herdr)     printf '%s' "$GREEN"  ;;
+    ghostty)   printf '%s' "$RED"    ;;
+    *)         printf '%s' "$GRAY"   ;;
+  esac
+}
+
+# One record per tip:
+#   display <TAB> tool <TAB> section <TAB> item <TAB> description <TAB> detail
+# fzf shows and searches field 1; the rest feed the preview and the clipboard.
+build_list() {
+  local file tool
+  for file in "$TIPS_DIR"/*.tsv; do
+    [ -e "$file" ] || continue
+    tool=${file##*/}
+    tool=${tool%.tsv}
+    awk -F '\t' -v tool="$tool" -v c="$(tool_color "$tool")" \
+        -v item="$BOLD$FG" -v desc="$GRAY" -v off="$OFF" '
+      /^[[:space:]]*($|#)/ { next }
+      NF >= 4 {
+        display = sprintf("%s%-10s%s %s%-24s%s %s%s%s",
+                          c, tool, off, item, $2, off, desc, $3, off)
+        print display "\t" tool "\t" $1 "\t" $2 "\t" $3 "\t" $4
+      }
+    ' "$file"
+  done
+}
+
+# Rendered inside fzf's preview pane, one tip per card.
+render_preview() {
+  local tool=$1 section=$2 item=$3 desc=$4 detail=${5:-}
+  local width=$(( ${FZF_PREVIEW_COLUMNS:-64} - 4 ))
+  [ "$width" -lt 20 ] && width=20
+
+  wrap() { printf '%s\n' "$1" | fold -s -w "$width" | sed 's/^/  /'; }
+
+  printf '\n  %s%s%s%s %s·%s %s%s%s\n\n' \
+    "$(tool_color "$tool")" "$BOLD" "$tool" "$OFF" "$GRAY" "$OFF" "$GRAY" "$section" "$OFF"
+  printf '  %s%s%s%s\n\n' "$BOLD" "$CYAN" "$item" "$OFF"
+  printf '%s%s%s\n' "$FG" "$(wrap "$desc")" "$OFF"
+  if [ -n "$detail" ]; then
+    printf '\n%s%s%s\n' "$GRAY" "$(wrap "$(printf '%b' "${detail//\\n/$'\n'}")")" "$OFF"
+  fi
+}
+
+case "${1:-}" in
+  --preview) shift; render_preview "$@"; exit 0 ;;
+  -h|--help)
+    printf 'usage: tips [query]\n\n  enter   copy the key or command\n  ctrl-y  copy without closing\n  ctrl-/  move the preview\n  esc     quit\n\nTips live in %s\n' "$TIPS_DIR"
+    exit 0 ;;
+esac
+
+command -v fzf >/dev/null || { echo "tips: fzf is not installed" >&2; exit 1; }
+[ -d "$TIPS_DIR" ] || { echo "tips: no tips found in $TIPS_DIR" >&2; exit 1; }
+
+picked=$(build_list | fzf \
+  --ansi \
+  --delimiter=$'\t' \
+  --with-nth=1 \
+  --accept-nth=4 \
+  --style=full \
+  --layout=reverse \
+  --info=inline-right \
+  --highlight-line \
+  --no-hscroll \
+  --tmux=center,90%,85% \
+  --border-label=" tips " \
+  --preview-label=" detail " \
+  --prompt='  ' \
+  --pointer='▌' \
+  --ghost='search a key, a command, a tool…' \
+  --footer='enter copy   ctrl-y stay   ctrl-/ preview   esc quit' \
+  --preview="'$SELF' --preview {2} {3} {4} {5} {6}" \
+  --preview-window='right,52%,wrap' \
+  --bind='ctrl-/:change-preview-window(down,55%|hidden|right,52%)' \
+  --bind='ctrl-y:execute-silent(printf %s {4} | pbcopy)+bell' \
+  --color="fg:#D8DEE9,fg+:#ECEFF4,bg:-1,bg+:#2E3440,hl:#88C0D0,hl+:#8FBCBB,\
+info:#7C8496,border:#3B4252,label:#A3BE8C,prompt:#A3BE8C,pointer:#A3BE8C,\
+spinner:#B48EAD,query:#ECEFF4,ghost:#4C566A,footer:#7C8496,footer-border:#3B4252,\
+preview-border:#3B4252,preview-label:#81A1C1,list-border:#3B4252,\
+input-border:#3B4252" \
+  --query="${1:-}") || exit 0
+
+[ -n "$picked" ] || exit 0
+printf '%s' "$picked" | pbcopy
+printf '%scopied%s %s%s%s\n' "$GRAY" "$OFF" "$BOLD" "$picked" "$OFF"

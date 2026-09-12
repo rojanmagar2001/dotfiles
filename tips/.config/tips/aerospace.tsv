@@ -1,0 +1,13 @@
+# section	item	description	detail
+focus	Alt+h j k l	Move focus between windows	Same directions as vim, and as tmux panes.
+move	Alt+Shift+h j k l	Move the focused window	
+workspaces	Alt+1 to 9	Go to a numbered workspace	
+workspaces	Alt+a to z	Go to a lettered workspace	Letters make good mnemonics: m for mail, s for slack.
+workspaces	Alt+Shift+key	Send the focused window to that workspace	Same key you would use to go there, plus Shift.
+workspaces	Alt+Tab	Back to the workspace you came from	
+layout	Alt+/	Tiles layout, toggling between horizontal and vertical	
+layout	Alt+,	Accordion layout, for stacking windows you switch between	
+size	Alt+- / Alt+=	Shrink or grow the focused window	
+monitors	Alt+Shift+Tab	Move this whole workspace to the next monitor	
+service	Alt+Shift+;	Enter service mode, for the things you do rarely	From there: Esc reloads the config, r resets the layout, f toggles floating, Backspace closes every window but this one, Alt+Shift+h j k l joins with a neighbour.
+service	Volume	Up and down arrows in service mode change the volume	Shift+Down mutes and drops you back to normal mode.
