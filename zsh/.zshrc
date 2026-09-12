@@ -20,13 +20,20 @@ setopt PUSHD_IGNORE_DUPS
 setopt INTERACTIVE_COMMENTS   # Allow # comments at the interactive prompt
 
 # Load config modules, in order. Each is optional.
-#   custom.zsh    - shell behaviour: prompt, completion, plugins, keybindings
 #   tools.zsh     - language runtimes and per-tool PATH/env
+#   custom.zsh    - shell behaviour: prompt, completion, plugins, keybindings
 #   aliases.zsh   - aliases
 #   functions.zsh - shell functions
 #   work.zsh      - work-specific config (not tracked)
 #   local.zsh     - machine-specific overrides (not tracked)
-for _zsh_module in custom tools aliases functions work local; do
+for _zsh_module in tools custom aliases functions work local; do
   [ -r "$ZSH_CONFIG_DIR/$_zsh_module.zsh" ] && source "$ZSH_CONFIG_DIR/$_zsh_module.zsh"
 done
 unset _zsh_module
+
+# bun completions
+[ -s "/home/rojanmagar/.bun/_bun" ] && source "/home/rojanmagar/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

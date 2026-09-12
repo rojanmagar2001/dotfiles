@@ -2,7 +2,6 @@
   "permissions": {
     "defaultMode": "auto"
   },
-  "model": "opus",
   "hooks": {
     "PreToolUse": [
       {
@@ -22,7 +21,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash '/Users/mac/.claude/hooks/herdr-agent-state.sh' session",
+            "command": "bash ~/.claude/hooks/herdr-agent-state.sh session",
             "timeout": 10
           }
         ]
@@ -31,16 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash '/Users/mac/.claude/hooks/tmux-claude-status.sh' idle",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash '/Users/mac/.config/tmux/scripts/agent-status.sh' claude idle",
+            "command": "bash ~/.config/tmux/scripts/agent-status.sh claude idle",
             "timeout": 5
           }
         ]
@@ -51,16 +41,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash '/Users/mac/.claude/hooks/tmux-claude-status.sh' busy",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash '/Users/mac/.config/tmux/scripts/agent-status.sh' claude busy",
+            "command": "bash ~/.config/tmux/scripts/agent-status.sh claude busy",
             "timeout": 5
           }
         ]
@@ -71,16 +52,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash '/Users/mac/.claude/hooks/tmux-claude-status.sh' idle",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash '/Users/mac/.config/tmux/scripts/agent-status.sh' claude done",
+            "command": "bash ~/.config/tmux/scripts/agent-status.sh claude done",
             "timeout": 5
           }
         ]
@@ -91,16 +63,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash '/Users/mac/.claude/hooks/tmux-claude-status.sh' notify",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash '/Users/mac/.config/tmux/scripts/agent-status.sh' claude notify",
+            "command": "bash ~/.config/tmux/scripts/agent-status.sh claude notify",
             "timeout": 5
           }
         ]
@@ -111,17 +74,20 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash '/Users/mac/.claude/hooks/tmux-claude-status.sh' off",
+            "command": "bash ~/.config/tmux/scripts/agent-status.sh claude off",
             "timeout": 5
           }
         ]
-      },
+      }
+    ],
+    "PostToolUse": [
       {
+        "matcher": "Write|Edit",
         "hooks": [
           {
             "type": "command",
-            "command": "bash '/Users/mac/.config/tmux/scripts/agent-status.sh' claude off",
-            "timeout": 5
+            "command": "if [ -f ~/.claude/hooks/comment-guard.py ]; then python3 ~/.claude/hooks/comment-guard.py; else exit 0; fi",
+            "statusMessage": "Checking code comments"
           }
         ]
       }
@@ -170,12 +136,17 @@
     }
   },
   "effortLevel": "high",
+  "modelSettings": {
+    "claude-opus-5": {
+      "effortLevel": "medium"
+    }
+  },
   "autoUpdatesChannel": "latest",
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "theme": "auto",
   "editorMode": "vim",
-  "skipAutoPermissionPrompt": true,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true
 }

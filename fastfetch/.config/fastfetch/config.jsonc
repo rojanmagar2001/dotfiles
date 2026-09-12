@@ -3,7 +3,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/fastfetch-cli/fastfetch/dev/doc/json_schema.json",
   "logo": {
-    "source": "macos",
+    // No "source" - let fastfetch auto-detect the running OS's logo.
     "padding": {
       "top": 1,
       "right": 4
@@ -52,10 +52,10 @@
       "compactType": "original-with-refresh-rate"
     },
     {
-      // macOS exposes no desktop environment to detect, neofetch hardcoded it too
-      "type": "custom",
-      "key": "DE",
-      "format": "Aqua"
+      // macOS exposes no desktop environment to detect; fastfetch reports
+      // "Aqua" for it natively, and the real DE (GNOME, KDE, ...) on Linux.
+      "type": "de",
+      "key": "DE"
     },
     {
       "type": "wm",

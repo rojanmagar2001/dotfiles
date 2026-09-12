@@ -29,7 +29,6 @@ local themes = {
 require('lazy').setup({
   require(themes[env_var_nvim_theme]),
   require 'plugins.neotree',
-  require 'plugins.colortheme',
   require 'plugins.bufferline',
   require 'plugins.lualine',
   require 'plugins.treesitter',

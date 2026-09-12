@@ -68,29 +68,55 @@ alias gqcp='quick_commit push'
 # nosleep - keep the machine awake, including with the lid closed.
 # Sleep is re-enabled when the function is interrupted.
 nosleep() {
-  sudo pmset -a disablesleep 1
-  caffeinate -si &
-  local pid=$!
-  trap "kill $pid 2>/dev/null; sudo pmset -a disablesleep 0; trap - INT" INT
-  wait $pid
-  sudo pmset -a disablesleep 0
+  if [[ "$OSTYPE" == darwin* ]]; then
+    sudo pmset -a disablesleep 1
+    caffeinate -si &
+    local pid=$!
+    trap "kill $pid 2>/dev/null; sudo pmset -a disablesleep 0; trap - INT" INT
+    wait $pid
+    sudo pmset -a disablesleep 0
+  else
+    if ! command -v systemd-inhibit >/dev/null 2>&1; then
+      echo "nosleep: systemd-inhibit is not available" >&2
+      return 1
+    fi
+    systemd-inhibit --what=sleep:idle --why="nosleep" --mode=block sleep infinity
+  fi
 }
 
-# movecur - jiggle the mouse pointer at random intervals. Requires cliclick.
+# movecur - jiggle the mouse pointer at random intervals.
+# Requires cliclick on macOS, xdotool under X11 on Linux.
 movecur() {
-  if ! command -v cliclick >/dev/null 2>&1; then
-    echo "movecur: cliclick is not installed (brew install cliclick)" >&2
-    return 1
+  if [[ "$OSTYPE" == darwin* ]]; then
+    if ! command -v cliclick >/dev/null 2>&1; then
+      echo "movecur: cliclick is not installed (brew install cliclick)" >&2
+      return 1
+    fi
+    caffeinate -di bash -c '
+      while true; do
+        dx=$((RANDOM % 41 - 20))       # -20..+20 px
+        dy=$((RANDOM % 41 - 20))       # -20..+20 px
+        pause=$((30 + RANDOM % 120))   # 30..149 ms between out and back
+        gap=$((1 + RANDOM % 4))        # 1..4 s between iterations
+        cliclick "m:$(printf "%+d,%+d" $dx $dy)" "w:$pause" \
+                 "m:$(printf "%+d,%+d" $((-dx)) $((-dy)))"
+        sleep $gap
+      done
+    '
+  else
+    if ! command -v xdotool >/dev/null 2>&1; then
+      echo "movecur: xdotool is not installed (sudo apt install xdotool)" >&2
+      return 1
+    fi
+    bash -c '
+      while true; do
+        dx=$((RANDOM % 41 - 20))       # -20..+20 px
+        dy=$((RANDOM % 41 - 20))       # -20..+20 px
+        gap=$((1 + RANDOM % 4))        # 1..4 s between iterations
+        xdotool mousemove_relative -- "$dx" "$dy"
+        xdotool mousemove_relative -- "$((-dx))" "$((-dy))"
+        sleep $gap
+      done
+    '
   fi
-  caffeinate -di bash -c '
-    while true; do
-      dx=$((RANDOM % 41 - 20))       # -20..+20 px
-      dy=$((RANDOM % 41 - 20))       # -20..+20 px
-      pause=$((30 + RANDOM % 120))   # 30..149 ms between out and back
-      gap=$((1 + RANDOM % 4))        # 1..4 s between iterations
-      cliclick "m:$(printf "%+d,%+d" $dx $dy)" "w:$pause" \
-               "m:$(printf "%+d,%+d" $((-dx)) $((-dy)))"
-      sleep $gap
-    done
-  '
 }

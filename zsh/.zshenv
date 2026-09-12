@@ -5,7 +5,7 @@
 export XDG_CONFIG_HOME="$HOME/.config"    # Config files
 export XDG_CACHE_HOME="$HOME/.cache"      # Cache files
 export XDG_DATA_HOME="$HOME/.local/share" # Application data
-export XDG_STATE_HOME="$HOME/.local/state"# Logs and state files
+export XDG_STATE_HOME="$HOME/.local/state" # Logs and state files
 
 # Where the modular zsh config lives
 export ZSH_CONFIG_DIR="$XDG_CONFIG_HOME/zsh"
@@ -29,9 +29,13 @@ export MANPAGER='nvim +Man!'
 # Hide computer name in terminal
 export DEFAULT_USER="$USER"
 
-# Build flags for software linking against Homebrew's zlib / bzip2
-export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
-export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
+# Build flags for software linking against Homebrew's zlib / bzip2 (macOS only;
+# Linux picks up zlib/bzip2 from the system's normal include/lib paths).
+if [[ "$OSTYPE" == darwin* ]]; then
+  export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
+  export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
+fi
 
 # Secrets - not tracked in git
 [ -f "$HOME/.env" ] && source "$HOME/.env"
+. "$HOME/.cargo/env"

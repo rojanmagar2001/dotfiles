@@ -52,10 +52,14 @@ path_prepend "$BUN_INSTALL/bin"
 [ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
 
 # --------------------------------------------------------------------- Ruby --
-path_prepend "/opt/homebrew/opt/ruby/bin"
 # Gem executables. Glob picks the newest gems directory without shelling out
 # to `gem environment`, which costs ~90ms per shell.
-_gem_bin=(/opt/homebrew/lib/ruby/gems/*/bin(N/On))
+if [[ "$OSTYPE" == darwin* ]]; then
+  path_prepend "/opt/homebrew/opt/ruby/bin"
+  _gem_bin=(/opt/homebrew/lib/ruby/gems/*/bin(N/On))
+else
+  _gem_bin=("$HOME/.local/share/gem/ruby"/*/bin(N/On))
+fi
 path_prepend "${_gem_bin[1]}"
 unset _gem_bin
 
@@ -63,7 +67,13 @@ unset _gem_bin
 path_prepend "$HOME/development/flutter/bin"
 
 # ----------------------------------------------------------------- Postgres --
-path_prepend "/opt/homebrew/opt/libpq/bin"
+if [[ "$OSTYPE" == darwin* ]]; then
+  path_prepend "/opt/homebrew/opt/libpq/bin"
+else
+  _libpq_bin=(/usr/lib/postgresql/*/bin(N/On))
+  path_prepend "${_libpq_bin[1]}"
+  unset _libpq_bin
+fi
 
 # ---------------------------------------------------------------------- Lua --
 export LUAVER_DIR="$HOME/.luaver"
@@ -78,6 +88,7 @@ path_prepend "$XDG_DATA_HOME/nvim/lazy-rocks/hererocks/bin"
 path_prepend "$HOME/.opencode/bin"
 path_prepend "$HOME/.antigravity/antigravity/bin"
 path_prepend "$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
+path_prepend "$HOME/.local/share/JetBrains/Toolbox/scripts"
 
 # ---------------------------------------------------------------------- AWS --
 export AWS_CLI_AUTO_PROMPT="on-partial"

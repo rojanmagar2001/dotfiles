@@ -4,7 +4,7 @@
       {
         "hooks": [
           {
-            "command": "bash '/Users/mac/.codex/herdr-agent-state.sh' session",
+            "command": "bash ~/.codex/herdr-agent-state.sh session",
             "timeout": 10,
             "type": "command"
           }
@@ -14,7 +14,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash '/Users/mac/.config/tmux/scripts/agent-status.sh' codex idle",
+            "command": "bash ~/.config/tmux/scripts/agent-status.sh codex idle",
             "timeout": 5
           }
         ]
@@ -25,7 +25,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash '/Users/mac/.config/tmux/scripts/agent-status.sh' codex busy",
+            "command": "bash ~/.config/tmux/scripts/agent-status.sh codex busy",
             "timeout": 5
           }
         ]
@@ -36,7 +36,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash '/Users/mac/.config/tmux/scripts/agent-status.sh' codex done",
+            "command": "bash ~/.config/tmux/scripts/agent-status.sh codex done",
             "timeout": 5
           }
         ]
@@ -47,7 +47,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash '/Users/mac/.config/tmux/scripts/agent-status.sh' codex perm",
+            "command": "bash ~/.config/tmux/scripts/agent-status.sh codex perm",
             "timeout": 5
           }
         ]

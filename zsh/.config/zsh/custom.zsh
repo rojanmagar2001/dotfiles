@@ -2,13 +2,20 @@
 # Prompt, completion, plugins, fzf and keybindings.
 
 # ---------------------------------------------------------------- Homebrew --
-eval "$(/opt/homebrew/bin/brew shellenv)"
-export HOMEBREW_NO_AUTO_UPDATE=1
-BREW_PREFIX="$(brew --prefix)"
+# macOS only; Linux uses apt + each tool's official installer instead.
+if [[ "$OSTYPE" == darwin* ]]; then
+  if [[ -x /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif [[ -x /usr/local/bin/brew ]]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+  fi
+  export HOMEBREW_NO_AUTO_UPDATE=1
+fi
+command -v brew >/dev/null 2>&1 && BREW_PREFIX="$(brew --prefix)"
 
 # -------------------------------------------------------------- Completion --
 # Must run before plugins that hook into the completion system.
-fpath=("$ZSH_CONFIG_DIR" "$BREW_PREFIX/share/zsh/site-functions" $fpath)
+fpath=("$ZSH_CONFIG_DIR" ${BREW_PREFIX:+$BREW_PREFIX/share/zsh/site-functions} $fpath)
 [ -d "$HOME/.docker/completions" ] && fpath=("$HOME/.docker/completions" $fpath)
 
 autoload -Uz compinit
@@ -51,12 +58,30 @@ export FZF_ALT_C_OPTS="--preview 'eza --tree --level=2 --color=always {}'"
 
 bindkey "ç" fzf-cd-widget   # Fix for ALT+C on macOS
 
-# ------------------------------------------------------------------ Plugins --
+# Package layout differs per platform (Homebrew vs. apt), so try each in turn.
+_zsh_plugin_file() {
+  local f
+  for f in \
+    ${BREW_PREFIX:+"$BREW_PREFIX/share/$1/$1.zsh"} \
+    "/usr/share/$1/$1.zsh" \
+    "/usr/share/zsh/plugins/$1/$1.zsh"
+  do
+    [[ -f "$f" ]] && { print -r -- "$f"; return 0; }
+  done
+  return 1
+}
+
 # Autosuggestions first, syntax highlighting must be sourced last.
-source "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+if _plugin_file=$(_zsh_plugin_file zsh-autosuggestions); then
+  source "$_plugin_file"
+fi
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
-source "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+if _plugin_file=$(_zsh_plugin_file zsh-syntax-highlighting); then
+  source "$_plugin_file"
+fi
+unset -f _zsh_plugin_file
+unset _plugin_file
 (( ${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[path_prefix]=none
@@ -87,13 +112,26 @@ function zle-line-init {
 zle -N zle-line-init
 [[ -t 1 ]] && echo -ne '\e[6 q'   # Beam cursor on startup
 
-# Yank to the macOS system clipboard
-function vi-yank-pbcopy {
-  zle vi-yank
-  printf '%s' "$CUTBUFFER" | pbcopy
+# Yank to the system clipboard (pbcopy on macOS, Wayland/X11 clipboard on Linux)
+_clipboard_copy() {
+  if command -v pbcopy >/dev/null 2>&1; then
+    pbcopy
+  elif [[ -n "$WAYLAND_DISPLAY" ]] && command -v wl-copy >/dev/null 2>&1; then
+    wl-copy
+  elif command -v xclip >/dev/null 2>&1; then
+    xclip -selection clipboard
+  elif command -v xsel >/dev/null 2>&1; then
+    xsel --clipboard --input
+  else
+    cat >/dev/null
+  fi
 }
-zle -N vi-yank-pbcopy
-bindkey -M vicmd 'y' vi-yank-pbcopy
+function vi-yank-clipboard {
+  zle vi-yank
+  printf '%s' "$CUTBUFFER" | _clipboard_copy
+}
+zle -N vi-yank-clipboard
+bindkey -M vicmd 'y' vi-yank-clipboard
 
 # Press 'v' in normal mode to edit the current line in $EDITOR
 autoload -Uz edit-command-line
