@@ -1,0 +1,6 @@
+{
+  "theme": "dark",
+  "tuiMode": "fullscreen",
+  "quietStartup": true,
+  "defaultProjectTrust": "ask"
+}

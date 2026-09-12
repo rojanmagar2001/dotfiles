@@ -78,7 +78,7 @@ fi
 
 echo "==> Stowing dotfiles (all packages except aerospace, which is macOS-only)"
 cd "$DOTFILES_DIR"
-PACKAGES=(claude codex fastfetch ghostty herdr nvim opencode starship tmux vim wezterm zsh)
+PACKAGES=(claude codex fastfetch ghostty herdr nvim opencode pi starship tmux vim wezterm zsh)
 BACKUP_DIR="$REAL_HOME/.dotfiles-backup-$(date +%Y%m%d%H%M%S)"
 
 # Ask stow what it would do first, and move aside exactly the real files/dirs
