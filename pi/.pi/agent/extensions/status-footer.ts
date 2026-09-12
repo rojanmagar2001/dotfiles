@@ -86,9 +86,9 @@ export default function (pi: ExtensionAPI) {
         const modelLabel = provider ? `${provider}/${model}` : model;
 
         const sep = theme.fg("dim", " │ ");
-        let line = theme.fg("mdLink", ` ${dir}`);
-        if (branch) line += sep + theme.fg("mdHeading", ` ${branch}`);
-        line += sep + theme.fg("accent", `󰧑 ${modelLabel}`);
+        let line = theme.fg("mdLink", `  ${dir} `);
+        if (branch) line += sep + theme.fg("mdHeading", ` ${branch} `);
+        line += sep + theme.fg("accent", `󰧑 ${modelLabel} `);
 
         const usage = ctx.getContextUsage();
         if (usage?.percent != null) {
