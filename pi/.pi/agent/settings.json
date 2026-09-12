@@ -1,6 +1,7 @@
 {
-  "theme": "dark",
+  "theme": "claude",
   "tuiMode": "fullscreen",
   "quietStartup": true,
-  "defaultProjectTrust": "ask"
+  "defaultProjectTrust": "ask",
+  "lastChangelogVersion": "0.85.1"
 }
