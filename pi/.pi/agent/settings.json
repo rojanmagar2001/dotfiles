@@ -3,5 +3,11 @@
   "tuiMode": "fullscreen",
   "quietStartup": true,
   "defaultProjectTrust": "ask",
-  "lastChangelogVersion": "0.85.1"
+  "lastChangelogVersion": "0.86.1",
+  "defaultProvider": "github-copilot",
+  "defaultModel": "claude-sonnet-5",
+  "enabledModels": [
+    "github-copilot/claude-sonnet-5",
+    "github-copilot/gpt-5-mini"
+  ]
 }
