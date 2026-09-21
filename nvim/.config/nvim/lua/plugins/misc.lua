@@ -57,4 +57,21 @@ return {
       require('colorizer').setup()
     end,
   },
+  {
+    -- Render markdown (headings, tables, code blocks) inside the buffer
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
+    ft = { 'markdown' },
+    opts = {},
+    keys = {
+      { '<leader>cp', '<cmd>RenderMarkdown toggle<CR>', ft = 'markdown', desc = 'Markdown [C]ode [P]review' },
+    },
+  },
+  {
+    -- Render images and mermaid diagrams inline in the buffer (needs mmdc + ImageMagick)
+    'folke/snacks.nvim',
+    priority = 1000,
+    lazy = false,
+    opts = { image = { enabled = true } },
+  },
 }
