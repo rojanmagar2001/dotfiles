@@ -74,4 +74,16 @@ return {
     lazy = false,
     opts = { image = { enabled = true } },
   },
+  {
+    -- Live markdown preview in your actual browser (needs Node.js for the build step)
+    'iamcco/markdown-preview.nvim',
+    cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
+    ft = { 'markdown' },
+    build = function()
+      vim.fn['mkdp#util#install']()
+    end,
+    keys = {
+      { '<leader>cP', '<cmd>MarkdownPreviewToggle<CR>', ft = 'markdown', desc = 'Markdown Browser [P]review' },
+    },
+  },
 }
