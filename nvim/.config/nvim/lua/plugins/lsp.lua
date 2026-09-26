@@ -40,6 +40,19 @@ return {
     -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
     -- and elegantly composed help section, `:help lsp-vs-treesitter`
 
+    -- Neovim 0.12 can draw an inlay hint computed for older text, past the end
+    -- of a now shorter line, and nvim_buf_set_extmark then throws "Invalid 'col':
+    -- out of range" on every redraw. Clamp those hints to the line end instead;
+    -- the next inlayHint response redraws them in the right place.
+    local inlay_ns = vim.api.nvim_create_namespace 'nvim.lsp.inlayhint'
+    local set_extmark = vim.api.nvim_buf_set_extmark
+    vim.api.nvim_buf_set_extmark = function(buf, ns, line, col, opts)
+      if ns == inlay_ns then
+        opts.strict = false
+      end
+      return set_extmark(buf, ns, line, col, opts)
+    end
+
     --  This function gets run when an LSP attaches to a particular buffer.
     --    That is to say, every time a new file is opened that is associated with
     --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
@@ -100,7 +113,7 @@ return {
         --
         -- When you move your cursor, the highlights will be cleared (the second autocommand).
         local client = vim.lsp.get_client_by_id(event.data.client_id)
-        if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+        if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
           local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
           vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
             buffer = event.buf,
@@ -127,7 +140,7 @@ return {
         -- code, if the language server you are using supports them
         --
         -- This may be unwanted, since they displace some of your code
-        if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+        if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
           -- Enable inlay hints
           vim.defer_fn(function()
             vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
@@ -225,7 +238,7 @@ return {
     --    :Mason
     --
     --  You can press `g?` for help in this menu.
-    require('mason').setup()
+    --  mason itself is set up by `config = true` in the dependencies above.
 
     -- You can add other tools here that you want Mason to install
     -- for you, so that they are available from within Neovim.
@@ -236,17 +249,12 @@ return {
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-    require('mason-lspconfig').setup {
-      handlers = {
-        function(server_name)
-          local server = servers[server_name] or {}
-          -- This handles overriding only values explicitly passed
-          -- by the server configuration above. Useful when disabling
-          -- certain features of an LSP (for example, turning off formatting for tsserver)
-          server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-          require('lspconfig')[server_name].setup(server)
-        end,
-      },
-    }
+    -- mason-lspconfig v2 ignores `handlers` and calls vim.lsp.enable() for each
+    -- installed server, so the overrides above are registered with vim.lsp.config
+    for server_name, server in pairs(servers) do
+      server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+      vim.lsp.config(server_name, server)
+    end
+    require('mason-lspconfig').setup()
   end,
 }
