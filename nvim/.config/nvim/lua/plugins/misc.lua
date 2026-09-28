@@ -87,4 +87,14 @@ return {
       { '<leader>cP', '<cmd>MarkdownPreviewToggle<CR>', ft = 'markdown', desc = 'Markdown Browser [P]review' },
     },
   },
+  {
+    -- Live HTML preview in your browser with auto-reload on save
+    'brianhuster/live-preview.nvim',
+    cmd = { 'LivePreview' },
+    ft = { 'html' },
+    keys = {
+      { '<leader>ch', '<cmd>LivePreview start<CR>', ft = 'html', desc = 'HTML Live Preview [S]tart' },
+      { '<leader>cH', '<cmd>LivePreview close<CR>', ft = 'html', desc = 'HTML Live Preview [S]top' },
+    },
+  },
 }
