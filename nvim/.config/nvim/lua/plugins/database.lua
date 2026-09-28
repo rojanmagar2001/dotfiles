@@ -1,7 +1,7 @@
 return {
   --use nvim in browser
-  { 'kristijanhusak/vim-dadbod-ui' },
-  { 'kristijanhusak/vim-dadbod-completion' },
+  { 'kristijanhusak/vim-dadbod-ui', cmd = { 'DBUI', 'DBUIToggle', 'DBUIAddConnection', 'DBUIFindBuffer' } },
+  { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' } },
   -- Database
   {
     'tpope/vim-dadbod',
@@ -10,7 +10,7 @@ return {
       'kristijanhusak/vim-dadbod-ui',
       'kristijanhusak/vim-dadbod-completion',
     },
-    -- event = 'VeryLazy',
+    event = 'VeryLazy',
     config = function()
       vim.g.db_ui_execute_on_save = 0 --do not execute on save
       vim.g.db_ui_win_position = 'left'

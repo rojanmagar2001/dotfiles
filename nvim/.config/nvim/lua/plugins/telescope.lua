@@ -18,9 +18,54 @@ return {
     'nvim-telescope/telescope-ui-select.nvim',
     'nvim-tree/nvim-web-devicons',
   },
+  keys = {
+    { '<leader>sb', function() require('telescope.builtin').buffers() end, desc = '[S]earch existing [B]uffers' },
+    { '<leader><tab>', function() require('telescope.builtin').buffers() end, desc = '[S]earch existing [B]uffers' },
+    { '<leader><leader>', function() require('telescope.builtin').buffers() end, desc = '[ ] Find existing buffers' },
+    { '<leader>sm', function() require('telescope.builtin').marks() end, desc = '[S]earch [M]arks' },
+    { '<leader>gf', function() require('telescope.builtin').git_files() end, desc = 'Search [G]it [F]iles' },
+    { '<leader>gc', function() require('telescope.builtin').git_commits() end, desc = 'Search [G]it [C]ommits' },
+    { '<leader>gcf', function() require('telescope.builtin').git_bcommits() end, desc = 'Search [G]it [C]ommits for current [F]ile' },
+    { '<leader>gb', function() require('telescope.builtin').git_branches() end, desc = 'Search [G]it [B]ranches' },
+    { '<leader>gs', function() require('telescope.builtin').git_status() end, desc = 'Search [G]it [S]tatus (diff view)' },
+    { '<leader>sf', function() require('telescope.builtin').find_files() end, desc = '[S]earch [F]iles' },
+    { '<leader>sh', function() require('telescope.builtin').help_tags() end, desc = '[S]earch [H]elp' },
+    { '<leader>sw', function() require('telescope.builtin').grep_string() end, desc = '[S]earch current [W]ord' },
+    { '<leader>sg', function() require('telescope.builtin').live_grep() end, desc = '[S]earch by [G]rep' },
+    { '<leader>sd', function() require('telescope.builtin').diagnostics() end, desc = '[S]earch [D]iagnostics' },
+    { '<leader>sr', function() require('telescope.builtin').resume() end, desc = '[S]earch [R]resume' },
+    { '<leader>so', function() require('telescope.builtin').oldfiles() end, desc = '[S]earch Recent Files' },
+    {
+      '<leader>sds',
+      function()
+        require('telescope.builtin').lsp_document_symbols {
+          symbols = { 'Class', 'Function', 'Method', 'Constructor', 'Interface', 'Module', 'Property' },
+        }
+      end,
+      desc = '[S]each LSP document [S]ymbols',
+    },
+    {
+      '<leader>s/',
+      function()
+        require('telescope.builtin').live_grep {
+          grep_open_files = true,
+          prompt_title = 'Live Grep in Open Files',
+        }
+      end,
+      desc = '[S]earch [/] in Open Files',
+    },
+    {
+      '<leader>/',
+      function()
+        require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+          previewer = false,
+        })
+      end,
+      desc = '[/] Fuzzily search in current buffer',
+    },
+  },
   config = function()
     local actions = require 'telescope.actions'
-    local builtin = require 'telescope.builtin'
 
     require('telescope').setup {
       defaults = {
@@ -91,39 +136,5 @@ return {
     -- Enable telescope fzf native, if installed
     pcall(require('telescope').load_extension, 'fzf')
     pcall(require('telescope').load_extension, 'ui-select')
-
-    vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = '[S]earch existing [B]uffers' })
-    vim.keymap.set('n', '<leader><tab>', builtin.buffers, { desc = '[S]earch existing [B]uffers' })
-    vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-    vim.keymap.set('n', '<leader>sm', builtin.marks, { desc = '[S]earch [M]arks' })
-    vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = 'Search [G]it [F]iles' })
-    vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = 'Search [G]it [C]ommits' })
-    vim.keymap.set('n', '<leader>gcf', builtin.git_bcommits, { desc = 'Search [G]it [C]ommits for current [F]ile' })
-    vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = 'Search [G]it [B]ranches' })
-    vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = 'Search [G]it [S]tatus (diff view)' })
-    vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-    vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
-    vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-    vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
-    vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
-    vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]resume' })
-    vim.keymap.set('n', '<leader>so', builtin.oldfiles, { desc = '[S]earch Recent Files' })
-    vim.keymap.set('n', '<leader>sds', function()
-      builtin.lsp_document_symbols {
-        symbols = { 'Class', 'Function', 'Method', 'Constructor', 'Interface', 'Module', 'Property' },
-      }
-    end, { desc = '[S]each LSP document [S]ymbols' })
-    vim.keymap.set('n', '<leader>s/', function()
-      builtin.live_grep {
-        grep_open_files = true,
-        prompt_title = 'Live Grep in Open Files',
-      }
-    end, { desc = '[S]earch [/] in Open Files' })
-    vim.keymap.set('n', '<leader>/', function()
-      -- You can pass additional configuration to telescope to change theme, layout, etc.
-      builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-        previewer = false,
-      })
-    end, { desc = '[/] Fuzzily search in current buffer' })
   end,
 }
